@@ -6,7 +6,7 @@ The image is published on Docker Hub at [`hub.docker.com/r/rushilsrivastava/pyth
 
 ## Image Tags
 
-Currently, the Python `3.7`-`3.9` is supported on Alpine Version `3.13`-`3.15`. Only the latest `grpcio` version is built, but previously built versions starting from `1.43.0` are available.
+Currently, the Python `3.7`-`3.9` is supported on Alpine Version `3.13`-`3.15`. Only the latest `grpcio` version is built, but previously built versions starting from `1.43.0` are available. You can use `latest` for the version to get the latest grpcio version as well.
 
 The naming convention goes as follows:
 

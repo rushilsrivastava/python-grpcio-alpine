@@ -85,7 +85,10 @@ jobs:
                   build-args: |
                       PYTHON_VERSION=${{ matrix.python-version }}
                       ALPINE_VERSION=${{ matrix.alpine-version }}
-                  tags: ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-${{ steps.grpcio-version.outputs.version }}-${{ matrix.alpine-version }}, ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-${{ steps.grpcio-version.outputs.version }}-${{ matrix.alpine-version }}-${{ github.sha }}
+                  tags: |
+                      ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-${{ steps.grpcio-version.outputs.version }}-${{ matrix.alpine-version }}
+                      ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-latest-${{ matrix.alpine-version }}
+                      ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-${{ steps.grpcio-version.outputs.version }}-${{ matrix.alpine-version }}-${{ github.sha }}
                   cache-from: type=local,src=/tmp/.buildx-cache
                   cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
