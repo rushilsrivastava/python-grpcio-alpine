@@ -32,11 +32,17 @@ jobs:
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v1
 
+            - name: Get grpcio version
+              id: grpcio-version
+              run: |
+                  GRPCIO_VERSION=$(cat requirements.txt | cut -d'=' -f 3)
+                  echo "::set-output name=version::$GRPCIO_VERSION"
+
             - name: Cache Docker layers
               uses: actions/cache@v2
               with:
                   path: /tmp/.buildx-cache
-                  key: ${{ runner.os }}-buildx-${{ github.sha }}
+                  key: ${{ runner.os }}-buildx-${{ matrix.python-version }}-${{ matrix.alpine-version }}-${{ steps.grpcio-version.outputs.version }}-${{ github.sha }}
                   restore-keys: |
                       ${{ runner.os }}-buildx-
 
@@ -46,12 +52,6 @@ jobs:
               with:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-            - name: Get grpcio version
-              id: grpcio-version
-              run: |
-                  GRPCIO_VERSION=$(cat requirements.txt | cut -d'=' -f 3)
-                  echo "::set-output name=version::$GRPCIO_VERSION"
 
             - name: Build and push (pr)
               if: ${{ github.event_name == 'pull_request' }}
