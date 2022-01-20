@@ -56,7 +56,7 @@ jobs:
                   build-args: |
                       PYTHON_VERSION=${{ matrix.python-version }}
                       ALPINE_VERSION=${{ matrix.alpine-version }}
-                  tags: ${{ IMAGE_NAME }}:${{ github.sha }}
+                  tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
                   cache-from: type=local,src=/tmp/.buildx-cache
                   cache-to: type=local,dest=/tmp/.buildx-cache
                   outputs: type=docker,dest=/tmp/python-alpine-grpcio-${{ github.sha }}.tar
@@ -79,7 +79,7 @@ jobs:
                   build-args: |
                       PYTHON_VERSION=${{ matrix.python-version }}
                       ALPINE_VERSION=${{ matrix.alpine-version }}
-                  tags: ${{ IMAGE_NAME }}:${{ matrix.python-version }}-${{ cat requirements.txt | cut -d'=' -f 3 }}-${{ matrix.alpine-version }}, ${{ IMAGE_NAME }}:${{ github.sha }}
+                  tags: ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-${{ cat requirements.txt | cut -d'=' -f 3 }}-${{ matrix.alpine-version }}, ${{ env.IMAGE_NAME }}:${{ github.sha }}
                   cache-from: type=local,src=/tmp/.buildx-cache
                   cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
