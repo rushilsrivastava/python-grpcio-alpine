@@ -47,6 +47,12 @@ jobs:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+            - name: Get grpcio version
+              id: grpcio-version
+              run: |
+                  GRPCIO_VERSION=$(cat requirements.txt | cut -d'=' -f 3)
+                  echo "::set-output name=version::$GRPCIO_VERSION"
+
             - name: Build and push (pr)
               if: ${{ github.event_name == 'pull_request' }}
               uses: docker/build-push-action@v2
@@ -79,7 +85,7 @@ jobs:
                   build-args: |
                       PYTHON_VERSION=${{ matrix.python-version }}
                       ALPINE_VERSION=${{ matrix.alpine-version }}
-                  tags: ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-${{ cat requirements.txt | cut -d'=' -f 3 }}-${{ matrix.alpine-version }}, ${{ env.IMAGE_NAME }}:${{ github.sha }}
+                  tags: ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-${{ steps.grpcio-version.outputs.version }}-${{ matrix.alpine-version }}, ${{ env.IMAGE_NAME }}:${{ github.sha }}
                   cache-from: type=local,src=/tmp/.buildx-cache
                   cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
