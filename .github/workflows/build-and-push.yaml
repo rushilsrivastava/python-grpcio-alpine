@@ -63,8 +63,8 @@ jobs:
                       PYTHON_VERSION=${{ matrix.python-version }}
                       ALPINE_VERSION=${{ matrix.alpine-version }}
                   tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
-                  cache-from: type=local,src=/tmp/.buildx-cache
-                  cache-to: type=local,dest=/tmp/.buildx-cache
+                  cache-from: type=gha, scope=${{ github.workflow }}
+                  cache-to: type=gha, scope=${{ github.workflow }}
                   outputs: type=docker,dest=/tmp/python-alpine-grpcio-${{ github.sha }}.tar
 
             - name: Upload artifact (pr)
@@ -89,13 +89,14 @@ jobs:
                       ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-${{ steps.grpcio-version.outputs.version }}-${{ matrix.alpine-version }}
                       ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-latest-${{ matrix.alpine-version }}
                       ${{ env.IMAGE_NAME }}:${{ matrix.python-version }}-${{ steps.grpcio-version.outputs.version }}-${{ matrix.alpine-version }}-${{ github.sha }}
-                  cache-from: type=local,src=/tmp/.buildx-cache
-                  cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+                  cache-from: type=gha, scope=${{ github.workflow }}
+                  cache-to: type=gha, scope=${{ github.workflow }}
 
             # Temp fix
             # https://github.com/docker/build-push-action/issues/252
             # https://github.com/moby/buildkit/issues/1896
-            - name: Move cache
-              run: |
-                  rm -rf /tmp/.buildx-cache
-                  mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+            # - name: Move cache
+            #   if: ${{ github.event_name != 'pull_request' }}
+            #   run: |
+            #       rm -rf /tmp/.buildx-cache
+            #       mv /tmp/.buildx-cache-new /tmp/.buildx-cache
