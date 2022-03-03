@@ -27,7 +27,7 @@ jobs:
             image-tags: ${{ env.IMAGE_NAME }}:${{ steps.docker_meta.outputs.version }}
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v1
