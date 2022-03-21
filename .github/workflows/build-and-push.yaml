@@ -39,7 +39,7 @@ jobs:
                   echo "::set-output name=version::$GRPCIO_VERSION"
 
             - name: Cache Docker layers
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: /tmp/.buildx-cache
                   key: ${{ runner.os }}-buildx-${{ matrix.python-version }}-${{ matrix.alpine-version }}-${{ steps.grpcio-version.outputs.version }}-${{ github.sha }}
