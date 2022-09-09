@@ -65,14 +65,14 @@ jobs:
                   tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
                   cache-from: type=gha, scope=${{ github.workflow }}
                   cache-to: type=gha, scope=${{ github.workflow }}
-                  outputs: type=docker,dest=/tmp/python-alpine-grpcio-${{ github.sha }}.tar
+                  outputs: type=docker,dest=/tmp/python-alpine-grpcio-${{ matrix.python-version }}-${{ matrix.alpine-version }}-${{ steps.grpcio-version.outputs.version }}-${{ github.sha }}.tar
 
             - name: Upload artifact (pr)
               if: ${{ github.event_name == 'pull_request' }}
               uses: actions/upload-artifact@v3
               with:
-                  name: docker-image
-                  path: /tmp/python-alpine-grpcio-${{ github.sha }}.tar
+                  name: docker-image-${{ matrix.python-version }}-${{ matrix.alpine-version }}-${{ steps.grpcio-version.outputs.version }}-${{ github.sha }}
+                  path: /tmp/python-alpine-grpcio-${{ matrix.python-version }}-${{ matrix.alpine-version }}-${{ steps.grpcio-version.outputs.version }}-${{ github.sha }}.tar
                   retention-days: 1
 
             - name: Build and push (branch)
