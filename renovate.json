@@ -1,11 +1,15 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["local>rushilsrivastava/renovate-config"],
+    "extends": [
+        "local>rushilsrivastava/renovate-config"
+    ],
     "packageRules": [
         {
-            "matchPackageNames": ["grpcio"],
+            "matchPackageNames": [
+                "grpcio"
+            ],
             "automerge": true,
-            "stabilityDays": 0
+            "minimumReleaseAge": null
         }
     ]
 }
